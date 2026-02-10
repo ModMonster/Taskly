@@ -50,12 +50,6 @@ class CustomDrawer extends StatelessWidget {
                 selected: selectedIndex == 2,
                 onTap: () => Navigator.pushReplacementNamed(context, "/important")
               ),
-              DrawerListTile(
-                leading: Icon(Icons.delete),
-                title: const Text("Trash"),
-                selected: selectedIndex == 3,
-                onTap: () => Navigator.pushReplacementNamed(context, "/trash")
-              ),
               Spacer(),
               DrawerListTile(
                 leading: Icon(Icons.settings),

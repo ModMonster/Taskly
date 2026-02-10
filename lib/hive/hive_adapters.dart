@@ -1,0 +1,5 @@
+import 'package:hive_ce/hive_ce.dart';
+import 'package:taskly/task.dart';
+
+@GenerateAdapters([AdapterSpec<Task>()])
+part 'hive_adapters.g.dart';

@@ -1,6 +1,6 @@
 class Task {
   final String title;
-  final String? description;
+  final String description;
   final DateTime? dueDate;
   bool isCompleted = false;
   bool isImportant;
@@ -8,7 +8,7 @@ class Task {
 
   Task({
     required this.title,
-    this.description,
+    required this.description,
     this.dueDate,
     this.isImportant = false
   });

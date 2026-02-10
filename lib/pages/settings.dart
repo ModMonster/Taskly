@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-import 'package:taskly/main.dart';
+import 'package:hive_ce/hive.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -10,10 +9,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  Preference<int> theme = preferences.getInt("theme", defaultValue: 0);
-
   String getCurrentThemeName() {
-    switch (theme.getValue()) {
+    switch (Hive.box("settings").get("theme")) {
       case 1:
         return "Light";
       case 2:
@@ -25,6 +22,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Box box = Hive.box("settings");
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
@@ -43,11 +42,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   content: StatefulBuilder(
                     builder: (context, setState2) {
                       return RadioGroup(
-                        groupValue: theme.getValue(),
+                        groupValue: box.get("theme"),
                         onChanged: (value) {
                           if (value == null) return;
                           setState2(() {
-                            theme.setValue(value.toInt());
+                            box.put("theme", value);
                           });
                         },
                         child: Column(
@@ -82,6 +81,21 @@ class _SettingsPageState extends State<SettingsPage> {
               });
             },
           ),
+          SwitchListTile(
+            secondary: Icon(Icons.delete_outline),
+            title: Text("Auto-delete completed tasks"),
+            subtitle: Text(
+              box.get("auto_delete", defaultValue: true)?
+                "Tasks will be deleted after 30 days" :
+                "Tasks will only be deleted manually"
+            ),
+            value: box.get("auto_delete", defaultValue: true),
+            onChanged: (value) {
+              setState(() {
+                box.put("auto_delete", value);
+              });
+            }
+          )
         ],
       ),
     );

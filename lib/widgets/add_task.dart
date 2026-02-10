@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce/hive.dart';
+import 'package:taskly/task.dart';
 
-class AddTaskModal extends StatelessWidget {
+class AddTaskModal extends StatefulWidget {
   final bool shrink;
-  const AddTaskModal({super.key, required this.shrink});
+  AddTaskModal({super.key, required this.shrink});
+
+  @override
+  State<AddTaskModal> createState() => _AddTaskModalState();
+}
+
+class _AddTaskModalState extends State<AddTaskModal> {
+  final TextEditingController titleController = TextEditingController();
+
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +30,20 @@ class AddTaskModal extends StatelessWidget {
           ),
           SizedBox(height: 24),
           TextField(
+            controller: titleController,
             autofocus: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               label: Text("Title"),
               focusColor: Colors.deepPurple[300]
             ),
+            onChanged: (newValue) {
+              setState(() {});
+            },
           ),
           SizedBox(height: 12),
           TextField(
+            controller: descriptionController,
             minLines: 3,
             maxLines: 3,
             decoration: InputDecoration(
@@ -36,15 +52,13 @@ class AddTaskModal extends StatelessWidget {
               focusColor: Colors.deepPurple[300]
             ),
           ),
-          shrink? SizedBox(height: 24) : Spacer(),
+          widget.shrink? SizedBox(height: 24) : Spacer(),
           Row(
             spacing: 12,
             children: [
               Expanded(
                 child: OutlinedButton(
-                  child: Text(
-                    "Cancel"
-                  ),
+                  child: Text("Cancel"),
                   onPressed: () {
                     Navigator.pop(context);
                   }
@@ -53,7 +67,12 @@ class AddTaskModal extends StatelessWidget {
               Expanded(
                 child: FilledButton(
                   child : Text("Create"),
-                  onPressed: () {
+                  onPressed: titleController.text.isEmpty? null : () {
+                    // Add task to storage
+                    Hive.box("tasks").add(new Task(
+                      title: titleController.text,
+                      description: descriptionController.text
+                    ));
                     Navigator.pop(context);
                   }
                 ),

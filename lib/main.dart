@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:hive_ce_flutter/adapters.dart';
+import 'package:taskly/hive/hive_registrar.g.dart';
+import 'package:taskly/pages/completed.dart';
 import 'package:taskly/pages/home.dart';
+import 'package:taskly/pages/important.dart';
 import 'package:taskly/pages/settings.dart';
-import 'package:taskly/pages/trash.dart';
-import 'package:taskly/widgets/scaffold.dart';
 
-late final StreamingSharedPreferences preferences;
+// TODO: empty message on completed and important pages
+// TODO: auto empty trash
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  preferences = await StreamingSharedPreferences.instance;
+
+  await Hive.initFlutter();
+  Hive.registerAdapters();
+  await Hive.openBox("tasks");
+  await Hive.openBox("settings");
 
   runApp(MyApp());
 }
@@ -29,11 +35,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return PreferenceBuilder(
-      preference: preferences.getInt("theme", defaultValue: 0),
-      builder: (context, value) {
+    final Box box = Hive.box("settings");
+
+    return StreamBuilder(
+      stream: box.watch().where((event) => {"theme"}.contains(event.key)),
+      builder: (context, snapshot) {
         return MaterialApp(
-          themeMode: ThemeMode.values[value],
+          themeMode: ThemeMode.values[box.get("theme", defaultValue: 0)],
           theme: ThemeData(
             colorSchemeSeed: Colors.purple
           ),
@@ -45,9 +53,8 @@ class _MyAppState extends State<MyApp> {
           routes: {
             "/": (context) => HomePage(),
             "/settings": (context) => SettingsPage(),
-            "/completed": (context) => ResponsiveScaffold(pageNumber: 1, appBar: AppBar(title: Text("Completed tasks")), body: Container(color: Colors.orange)),
-            "/important": (context) =>  ResponsiveScaffold(pageNumber: 2, appBar: AppBar(title: Text("Important tasks")), body: Container(color: Colors.yellow)),
-            "/trash": (context) =>  TrashPage()
+            "/completed": (context) => CompletedPage(),
+            "/important": (context) => ImportantPage(),
           },
         );
       },

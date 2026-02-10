@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:side_sheet/side_sheet.dart';
 import 'package:taskly/task.dart';
 import 'package:taskly/widgets/add_task.dart';
@@ -11,6 +12,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Box box = Hive.box("tasks");
     Size screenSize = MediaQuery.of(context).size;
 
     return ResponsiveScaffold(
@@ -43,14 +45,46 @@ class HomePage extends StatelessWidget {
           }
         },
       ),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return TaskListTile(
-            Task(
-              title: "Task ${index + 1}",
-              description: index % 2 == 0? null : "This is the description for task ${index + 1}"
-            )
+      body: StreamBuilder(
+        stream: box.watch(),
+        builder: (context, snapshot) {
+          int waiting = 0;
+          box.toMap().forEach((key, value) {
+            if (!value.isCompleted) waiting++;
+          });
+
+          if (waiting == 0) {
+            return Center(
+              child: Padding(
+                padding: EdgeInsetsGeometry.fromLTRB(80, 250, 80, 0),
+                child: Column(
+                  spacing: 12,
+                  children: [
+                    Icon(
+                      Icons.check_circle_outline,
+                      size: 96,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    Text(
+                      "You're all caught up!",
+                      style: TextStyle(
+                        fontSize: 24,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              ),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: box.length,
+            itemBuilder: (context, index) {
+              Task task = box.getAt(index);
+              if (task.isCompleted) return Container();
+              return TaskListTile(index, task);
+            }
           );
         }
       )
