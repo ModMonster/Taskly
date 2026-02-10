@@ -48,7 +48,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           if (value == null) return;
                           setState2(() {
                             theme.setValue(value.toInt());
-                            themeNotifier.value = ThemeMode.values[value];
                           });
                         },
                         child: Column(

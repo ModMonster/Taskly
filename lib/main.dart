@@ -5,14 +5,10 @@ import 'package:taskly/pages/settings.dart';
 import 'package:taskly/widgets/scaffold.dart';
 
 late final StreamingSharedPreferences preferences;
-final ValueNotifier themeNotifier = ValueNotifier(ThemeMode.system);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   preferences = await StreamingSharedPreferences.instance;
-
-  Preference<int> theme = preferences.getInt("theme", defaultValue: 0);
-  themeNotifier.value = ThemeMode.values[theme.getValue()];
 
   runApp(MyApp());
 }
@@ -32,11 +28,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: themeNotifier,
-      builder: (context, value, child) {
+    return PreferenceBuilder(
+      preference: preferences.getInt("theme", defaultValue: 0),
+      builder: (context, value) {
         return MaterialApp(
-          themeMode: value,
+          themeMode: ThemeMode.values[value],
           theme: ThemeData(
             colorSchemeSeed: Colors.purple
           ),
@@ -53,7 +49,7 @@ class _MyAppState extends State<MyApp> {
             "/trash": (context) =>  ResponsiveScaffold(pageNumber: 3, appBar: AppBar(title: Text("Trash")), body: Container(color: Colors.red)),
           },
         );
-      }
+      },
     );
   }
 }
