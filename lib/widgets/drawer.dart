@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskly/main.dart';
 import 'package:taskly/widgets/drawer_list_tile.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -64,15 +65,7 @@ class CustomDrawer extends StatelessWidget {
                 title: const Text("About Taskly"),
                 onTap: () {
                   Navigator.pop(context); // close drawer
-                  showAboutDialog(
-                    context: context,
-                    applicationName: "Taskly",
-                    applicationVersion: "1.0.0",
-                    applicationIcon: Icon(Icons.task),
-                    children: [
-                      Text("Taskly is a simple task management app built with Flutter.")
-                    ]
-                  );
+                  showTasklyAboutDialog(context);
                 },
               ),
             ],

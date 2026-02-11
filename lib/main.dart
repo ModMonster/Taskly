@@ -61,3 +61,15 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+void showTasklyAboutDialog(BuildContext context) {
+  showAboutDialog(
+    context: context,
+    applicationName: "Taskly",
+    applicationVersion: "1.0.0",
+    applicationIcon: Icon(Icons.task),
+    children: [
+      Text("Taskly is a simple task management app built with Flutter.")
+    ]
+  );
+}

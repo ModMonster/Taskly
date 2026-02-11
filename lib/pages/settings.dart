@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:taskly/main.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -98,6 +99,14 @@ class _SettingsPageState extends State<SettingsPage> {
               setState(() {
                 box.put("auto_delete", value);
               });
+            }
+          ),
+          Divider(),
+          ListTile(
+            title: Text("About Taskly"),
+            leading: Icon(Icons.info_outline),
+            onTap: () {
+              showTasklyAboutDialog(context);
             }
           )
         ],
