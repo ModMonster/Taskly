@@ -42,7 +42,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   content: StatefulBuilder(
                     builder: (context, setState2) {
                       return RadioGroup(
-                        groupValue: box.get("theme"),
+                        groupValue: box.get("theme", defaultValue: 0),
                         onChanged: (value) {
                           if (value == null) return;
                           setState2(() {
