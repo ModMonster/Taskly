@@ -41,8 +41,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   contentPadding: EdgeInsets.only(top: 8.0),
                   content: StatefulBuilder(
                     builder: (context, setState2) {
+                      // Putting this directly in doesn't work.
+                      // Do not ask me why, I have literally no idea.
+                      int val = box.get("theme", defaultValue: 0);
+                      
                       return RadioGroup(
-                        groupValue: box.get("theme", defaultValue: 0),
+                        groupValue: val,
                         onChanged: (value) {
                           if (value == null) return;
                           setState2(() {
