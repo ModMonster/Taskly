@@ -18,20 +18,25 @@ class GenericTaskListTile extends StatelessWidget {
       children: [
         ListTile(
           title: Text(task.title),
-          subtitle: Column(
+          subtitle: task.description.isEmpty && task.dueDate == null? null : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                task.description,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+              Visibility(
+                visible: task.description.isNotEmpty,
+                child: Text(
+                  task.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Visibility(
                 visible: task.dueDate != null,
-                child: Chip(
-                  avatar: Icon(Icons.calendar_month),
-                  label: Text(formatDueDate(task.dueDate)),
-                  visualDensity: VisualDensity.compact,
+                child: Container(
+                  child: Chip(
+                    avatar: Icon(Icons.calendar_month),
+                    label: Text(formatDueDate(task.dueDate)),
+                    visualDensity: VisualDensity.compact,
+                  ),
                 ),
               )
             ],
