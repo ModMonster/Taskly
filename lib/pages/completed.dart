@@ -52,7 +52,10 @@ class CompletedPage extends StatelessWidget {
                 }
               ) : Column(
                 children: [
-                  AutoDeleteBox(completed),
+                  Visibility(
+                    visible: settingsBox.get("auto_delete", defaultValue: true),
+                    child: AutoDeleteBox(completed)
+                  ),
                   Expanded(
                     child: EmptyPage(
                       icon: Icons.check_circle_outline,
