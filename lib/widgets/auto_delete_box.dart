@@ -3,7 +3,7 @@ import 'package:taskly/pages/completed.dart';
 
 class AutoDeleteBox extends StatelessWidget {
   final int completed;
-  const AutoDeleteBox({this.completed = 0, super.key});
+  const AutoDeleteBox(this.completed, {super.key});
 
   @override
   Widget build(BuildContext context) {

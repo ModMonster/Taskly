@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:taskly/task.dart';
+import 'package:taskly/widgets/add_task.dart';
 
 class GenericTaskListTile extends StatelessWidget {
   final int index;
@@ -10,37 +11,62 @@ class GenericTaskListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(task.title),
-      subtitle: task.description.isNotEmpty ? Text(task.description) : null,
-      leading: IconButton(
-        icon: Icon(
-          task.isCompleted? Icons.check_box : Icons.check_box_outline_blank
+    print(task.dueDate);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ListTile(
+          title: Text(task.title),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                task.description,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Visibility(
+                visible: task.dueDate != null,
+                child: Chip(
+                  avatar: Icon(Icons.calendar_month),
+                  label: Text(formatDueDate(task.dueDate)),
+                  visualDensity: VisualDensity.compact,
+                ),
+              )
+            ],
+          ),
+          isThreeLine: task.dueDate != null,
+          leading: IconButton(
+            icon: Icon(
+              task.isCompleted? Icons.check_box : Icons.check_box_outline_blank
+            ),
+            onPressed: () {
+              toggleTaskCompleted(index, task);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  persist: false,
+                  behavior: SnackBarBehavior.floating,
+                  margin: EdgeInsets.only(
+                    bottom: 10,
+                    right: 10,
+                    left: MediaQuery.of(context).size.width > 768? MediaQuery.of(context).size.width - 310 : 10
+                  ),
+                  content: Text(task.isCompleted? "Task marked as complete" : "Task marked as incomplete"),
+                  action: SnackBarAction(
+                    label: "Undo",
+                    onPressed: () {
+                      toggleTaskCompleted(index, task);
+                    },
+                  ),
+                )
+              );
+            },
+            tooltip: "Mark as completed",
+          ),
+          trailing: trailing
         ),
-        onPressed: () {
-          toggleTaskCompleted(index, task);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              persist: false,
-              behavior: SnackBarBehavior.floating,
-              margin: EdgeInsets.only(
-                bottom: 10,
-                right: 10,
-                left: MediaQuery.of(context).size.width > 768? MediaQuery.of(context).size.width - 310 : 10
-              ),
-              content: Text(task.isCompleted? "Task marked as complete" : "Task marked as incomplete"),
-              action: SnackBarAction(
-                label: "Undo",
-                onPressed: () {
-                  toggleTaskCompleted(index, task);
-                },
-              ),
-            )
-          );
-        },
-        tooltip: "Mark as completed",
-      ),
-      trailing: trailing
+      ],
     );
   }
 }

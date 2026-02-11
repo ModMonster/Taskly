@@ -43,7 +43,7 @@ class CompletedPage extends StatelessWidget {
                   if (index == 0) {
                     // Auto delete info box
                     if (!settingsBox.get("auto_delete", defaultValue: true)) return Container();
-                    return AutoDeleteBox();
+                    return AutoDeleteBox(completed);
                   }
 
                   Task task = box.getAt(index - 1);
@@ -52,7 +52,7 @@ class CompletedPage extends StatelessWidget {
                 }
               ) : Column(
                 children: [
-                  AutoDeleteBox(),
+                  AutoDeleteBox(completed),
                   Expanded(
                     child: EmptyPage(
                       icon: Icons.check_circle_outline,

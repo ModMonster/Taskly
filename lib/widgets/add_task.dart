@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:taskly/task.dart';
 
 class AddTaskModal extends StatefulWidget {
@@ -13,8 +14,11 @@ class AddTaskModal extends StatefulWidget {
 class _AddTaskModalState extends State<AddTaskModal> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final FocusNode descriptionFocusNode = FocusNode();
 
   bool isImportant = false;
+  bool hasDescription = false;
+  DateTime? dueDate = null;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,6 @@ class _AddTaskModalState extends State<AddTaskModal> {
                   autofocus: true,
                   decoration: InputDecoration(
                     label: Text("New task"),
-                    focusColor: Colors.deepPurple[300]
                   ),
                   onChanged: (newValue) {
                     setState(() {});
@@ -53,23 +56,58 @@ class _AddTaskModalState extends State<AddTaskModal> {
               )
             ],
           ),
+          Visibility(
+            visible: hasDescription,
+            child: TextField(
+              controller: descriptionController,
+              focusNode: descriptionFocusNode,
+              maxLines: 3,
+              minLines: 3,
+              decoration: InputDecoration(
+                label: Text("Description"),
+                border: OutlineInputBorder()
+              ),
+            ),
+          ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              spacing: 8,
               children: [
-                ActionChip(
-                  label: Text("Description"),
-                  avatar: Icon(Icons.add),
-                  onPressed: () {
-            
-                  },
+                Visibility(
+                  visible: !hasDescription,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: ActionChip(
+                      label: Text("Description"),
+                      avatar: Icon(Icons.add),
+                      onPressed: () {
+                        setState(() {
+                          hasDescription = true;
+                          descriptionFocusNode.requestFocus(); // Focus the description field
+                        });
+                      },
+                    ),
+                  ),
                 ),
                 ActionChip(
-                  label: Text("Due date"),
-                  avatar: Icon(Icons.add),
-                  onPressed: () {
-            
+                  label: Text(
+                    dueDate != null? formatDueDate(dueDate!) : "Due date"
+                  ),
+                  avatar: Icon(
+                    dueDate != null? Icons.calendar_month : Icons.add
+                  ),
+                  onPressed: () async {
+                    DateTime? date = await showDatePicker(
+                      context: context,
+                      initialDate: dueDate == null? DateTime.now().add(Duration(days: 1)) : dueDate,
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime.now().add(Duration(days: 365*1000))
+                    );
+                    if (date == null) return;
+
+                    setState(() {
+                      this.dueDate = date;
+                    });
                   },
                 )
               ],
@@ -95,7 +133,8 @@ class _AddTaskModalState extends State<AddTaskModal> {
                     Hive.box("tasks").add(new Task(
                       title: titleController.text,
                       description: descriptionController.text,
-                      isImportant: isImportant
+                      isImportant: isImportant,
+                      dueDate: dueDate
                     ));
                     Navigator.pop(context);
                   }
@@ -107,4 +146,12 @@ class _AddTaskModalState extends State<AddTaskModal> {
       ),
     );
   }
+}
+
+String formatDueDate(DateTime? dueDate) {
+  if (dueDate == null) return "";
+  if (dueDate.year == DateTime.now().year) {
+    return DateFormat("MMM d").format(dueDate);
+  }
+  return DateFormat("MMM d, yyyy").format(dueDate);
 }
