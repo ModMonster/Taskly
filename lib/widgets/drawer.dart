@@ -3,10 +3,10 @@ import 'package:taskly/main.dart';
 import 'package:taskly/widgets/drawer_list_tile.dart';
 
 class CustomDrawer extends StatelessWidget {
-  final bool showHeader;
+  final bool isCollapsed;
   final double? elevation;
   final int selectedIndex;
-  const CustomDrawer({super.key, this.showHeader = true, this.elevation, this.selectedIndex = -1});
+  const CustomDrawer({super.key, this.isCollapsed = true, this.elevation, this.selectedIndex = -1});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class CustomDrawer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              showHeader? Padding(
+              isCollapsed? Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 8,
                   vertical: 22
@@ -37,7 +37,7 @@ class CustomDrawer extends StatelessWidget {
                 leading: Icon(Icons.topic),
                 title: const Text("All tasks"),
                 selected: selectedIndex == 0,
-                onTap: () => Navigator.pushReplacementNamed(context, "/")
+                onTap: () => Navigator.pushReplacementNamed(context, "/") // TODO: are we replacing the drawer here and actually pushing a bunch of views on top of each other?
               ),
               DrawerListTile(
                 leading: Icon(Icons.check_circle),
@@ -56,7 +56,7 @@ class CustomDrawer extends StatelessWidget {
                 leading: Icon(Icons.settings),
                 title: const Text("Settings"),
                 onTap: () {
-                  Navigator.pop(context); // close drawer
+                  if (isCollapsed) Navigator.pop(context); // close drawer
                   Navigator.pushNamed(context, "/settings");
                 }
               ),
@@ -64,7 +64,7 @@ class CustomDrawer extends StatelessWidget {
                 leading: Icon(Icons.info),
                 title: const Text("About Taskly"),
                 onTap: () {
-                  Navigator.pop(context); // close drawer
+                  if (isCollapsed) Navigator.pop(context); // close drawer
                   showTasklyAboutDialog(context);
                 },
               ),

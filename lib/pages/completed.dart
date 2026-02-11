@@ -35,6 +35,11 @@ class CompletedPage extends StatelessWidget {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
+                margin: EdgeInsets.only(
+                  bottom: 10,
+                  left: MediaQuery.of(context).size.width > 768? 314 : 10,
+                  right: MediaQuery.of(context).size.width > 768? MediaQuery.of(context).size.width - 624 : 10
+                ),
                 persist: false,
                 behavior: SnackBarBehavior.floating,
                 content: Text("${pluralize(completed)} permanently deleted"),
@@ -85,7 +90,8 @@ class CompletedPage extends StatelessWidget {
                       children: [
                         ListTile(
                           leading: Icon(Icons.check_circle_outline),
-                          subtitle: Text("Tasks that have been marked as complete for more than 30 days will be deleted automatically."),
+                          title: Text("Tasks that have been marked as complete for more than 30 days will be deleted automatically."),
+                          titleTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 54),

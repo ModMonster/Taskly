@@ -18,12 +18,12 @@ class ResponsiveScaffold extends StatelessWidget {
       appBar: appBar,
       body: screenSize.width >= 768? Row(
         children: [
-          CustomDrawer(showHeader: false, elevation: 0, selectedIndex: pageNumber),
+          CustomDrawer(isCollapsed: false, elevation: 0, selectedIndex: pageNumber),
           VerticalDivider(
             width: 1,
             thickness: 1,
           ),
-          body
+          Expanded(child: body)
         ]
       ) : body,
       floatingActionButton: floatingActionButton

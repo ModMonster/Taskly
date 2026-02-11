@@ -23,6 +23,11 @@ class GenericTaskListTile extends StatelessWidget {
             SnackBar(
               persist: false,
               behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(
+                bottom: 10,
+                right: 10,
+                left: MediaQuery.of(context).size.width > 768? MediaQuery.of(context).size.width - 310 : 10
+              ),
               content: Text(task.isCompleted? "Task marked as complete" : "Task marked as incomplete"),
               action: SnackBarAction(
                 label: "Undo",

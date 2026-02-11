@@ -27,6 +27,7 @@ class HomePage extends StatelessWidget {
         onPressed: () {
           if (screenSize.width >= 480) {
             SideSheet.right(
+              sheetColor: Theme.of(context).colorScheme.surfaceContainer,
               context: context,
               width: 360,
               body: AddTaskModal(shrink: false)
@@ -54,26 +55,25 @@ class HomePage extends StatelessWidget {
           });
 
           if (waiting == 0) {
-            return Center(
-              child: Padding(
-                padding: EdgeInsetsGeometry.fromLTRB(80, 250, 80, 0),
-                child: Column(
-                  spacing: 12,
-                  children: [
-                    Icon(
-                      Icons.check_circle_outline,
-                      size: 96,
-                      color: Theme.of(context).colorScheme.secondary,
+            return Align(
+              alignment: Alignment(0, -0.25),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 12,
+                children: [
+                  Icon(
+                    Icons.check_circle_outline,
+                    size: 96,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  Text(
+                    "You're all caught up!",
+                    style: TextStyle(
+                      fontSize: 24,
                     ),
-                    Text(
-                      "You're all caught up!",
-                      style: TextStyle(
-                        fontSize: 24,
-                      ),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                ),
+                    textAlign: TextAlign.center,
+                  )
+                ],
               ),
             );
           }
