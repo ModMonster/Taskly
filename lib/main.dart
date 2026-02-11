@@ -7,8 +7,6 @@ import 'package:taskly/pages/important.dart';
 import 'package:taskly/pages/settings.dart';
 import 'package:taskly/task.dart';
 
-// TODO: empty message on completed and important pages
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

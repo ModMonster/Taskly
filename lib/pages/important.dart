@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:taskly/task.dart';
+import 'package:taskly/widgets/empty_page.dart';
 import 'package:taskly/widgets/scaffold.dart';
 import 'package:taskly/widgets/task_list_tile.dart';
 
@@ -19,6 +20,18 @@ class ImportantPage extends StatelessWidget {
       body: StreamBuilder(
         stream: box.watch(),
         builder: (context, snapshot) {
+          int waiting = 0;
+          box.toMap().forEach((key, value) {
+            if (!value.isCompleted) waiting++;
+          });
+
+          if (waiting == 0) {
+            return EmptyPage(
+              icon: Icons.check_circle_outline,
+              text: "Nothing to see here!",
+            );
+          }
+          
           return ListView.builder(
             itemCount: box.length,
             itemBuilder: (context, index) {

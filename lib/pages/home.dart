@@ -4,6 +4,7 @@ import 'package:side_sheet/side_sheet.dart';
 import 'package:taskly/task.dart';
 import 'package:taskly/widgets/add_task.dart';
 import 'package:taskly/widgets/auto_extend_fab.dart';
+import 'package:taskly/widgets/empty_page.dart';
 import 'package:taskly/widgets/scaffold.dart';
 import 'package:taskly/widgets/task_list_tile.dart';
 
@@ -55,26 +56,9 @@ class HomePage extends StatelessWidget {
           });
 
           if (waiting == 0) {
-            return Align(
-              alignment: Alignment(0, -0.25),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                spacing: 12,
-                children: [
-                  Icon(
-                    Icons.check_circle_outline,
-                    size: 96,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  Text(
-                    "You're all caught up!",
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
-                    textAlign: TextAlign.center,
-                  )
-                ],
-              ),
+            return EmptyPage(
+              text: "You're all caught up!",
+              icon: Icons.check_circle_outline
             );
           }
 
