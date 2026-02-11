@@ -4,7 +4,7 @@ class Task {
   final DateTime? dueDate;
   bool isCompleted = false;
   bool isImportant;
-  DateTime? trashTime;
+  DateTime? completionTime;
 
   Task({
     required this.title,

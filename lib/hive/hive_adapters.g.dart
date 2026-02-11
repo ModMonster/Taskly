@@ -23,7 +23,7 @@ class TaskAdapter extends TypeAdapter<Task> {
         isImportant: fields[4] == null ? false : fields[4] as bool,
       )
       ..isCompleted = fields[3] as bool
-      ..trashTime = fields[5] as DateTime?;
+      ..completionTime = fields[7] as DateTime?;
   }
 
   @override
@@ -40,8 +40,8 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..write(obj.isCompleted)
       ..writeByte(4)
       ..write(obj.isImportant)
-      ..writeByte(5)
-      ..write(obj.trashTime);
+      ..writeByte(7)
+      ..write(obj.completionTime);
   }
 
   @override

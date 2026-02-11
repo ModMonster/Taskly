@@ -18,8 +18,7 @@ class GenericTaskListTile extends StatelessWidget {
           task.isCompleted? Icons.check_box : Icons.check_box_outline_blank
         ),
         onPressed: () {
-          task.isCompleted = !task.isCompleted;
-          Hive.box("tasks").putAt(index, task);
+          toggleTaskCompleted(index, task);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               persist: false,
@@ -28,8 +27,7 @@ class GenericTaskListTile extends StatelessWidget {
               action: SnackBarAction(
                 label: "Undo",
                 onPressed: () {
-                  task.isCompleted = !task.isCompleted;
-                  Hive.box("tasks").putAt(index, task);
+                  toggleTaskCompleted(index, task);
                 },
               ),
             )
@@ -40,4 +38,10 @@ class GenericTaskListTile extends StatelessWidget {
       trailing: trailing
     );
   }
+}
+
+void toggleTaskCompleted(int index, Task task) {
+  task.isCompleted = !task.isCompleted;
+  task.completionTime = task.isCompleted? DateTime.now() : null;
+  Hive.box("tasks").putAt(index, task);
 }

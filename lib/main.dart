@@ -5,9 +5,9 @@ import 'package:taskly/pages/completed.dart';
 import 'package:taskly/pages/home.dart';
 import 'package:taskly/pages/important.dart';
 import 'package:taskly/pages/settings.dart';
+import 'package:taskly/task.dart';
 
 // TODO: empty message on completed and important pages
-// TODO: auto empty trash
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +16,8 @@ void main() async {
   Hive.registerAdapters();
   await Hive.openBox("tasks");
   await Hive.openBox("settings");
+
+  clearExpiredTasks();
 
   runApp(MyApp());
 }
@@ -72,4 +74,20 @@ void showTasklyAboutDialog(BuildContext context) {
       Text("Taskly is a simple task management app built with Flutter.")
     ]
   );
+}
+
+// Empty any tasks that have been completed for 30+ days
+void clearExpiredTasks() {
+  // Don't do anything if user turned this feature off
+  if (!Hive.box("settings").get("auto_delete", defaultValue: true)) return;
+
+  final Box box = Hive.box("tasks");
+  final List keysToDelete = [];
+  for (var key in box.keys) {
+    final Task task = box.get(key);
+    if (task.isCompleted && DateTime.now().difference(task.completionTime!).inDays >= 30) {
+      keysToDelete.add(key);
+    }
+  }
+  box.deleteAll(keysToDelete);
 }
