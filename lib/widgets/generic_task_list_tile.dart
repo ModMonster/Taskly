@@ -32,9 +32,10 @@ class GenericTaskListTile extends StatelessWidget {
                 visible: task.dueDate != null,
                 child: Container(
                   child: Chip(
-                    avatar: Icon(Icons.calendar_month),
+                    avatar: Icon(task.isOverdue()? Icons.warning : Icons.calendar_month),
                     label: Text(formatDueDate(task.dueDate)),
                     visualDensity: VisualDensity.compact,
+                    backgroundColor: task.isOverdue()? Theme.of(context).colorScheme.errorContainer : null,
                   ),
                 ),
               )

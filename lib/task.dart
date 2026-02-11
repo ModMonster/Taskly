@@ -12,4 +12,9 @@ class Task {
     this.dueDate,
     this.isImportant = false
   });
+
+  bool isOverdue() {
+    if (dueDate == null) return false;
+    return dueDate!.isBefore(DateTime.now().subtract(Duration(days: 1)));
+  }
 }
