@@ -25,12 +25,23 @@ class CustomDrawer extends StatelessWidget {
                   horizontal: 8,
                   vertical: 22
                 ),
-                child: Text(
-                  "Taskly",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500
-                  )
+                child: Row(
+                  spacing: 12,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: AssetImage(
+                        "assets/icon.png",
+                      ),
+                      radius: 18,
+                    ),
+                    Text(
+                      "Taskly",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500
+                      )
+                    ),
+                  ],
                 ),
               ) : SizedBox(height: 10),
               DrawerListTile(

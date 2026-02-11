@@ -11,7 +11,7 @@ class DrawerListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      tileColor: selected? Theme.of(context).colorScheme.surfaceBright : null,
+      tileColor: selected? Theme.of(context).colorScheme.surfaceContainerHighest : null,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8)
       ),

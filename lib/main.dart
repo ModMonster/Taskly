@@ -67,10 +67,16 @@ void showTasklyAboutDialog(BuildContext context) {
     context: context,
     applicationName: "Taskly",
     applicationVersion: "1.0.0",
-    applicationIcon: Icon(Icons.task),
+    applicationIcon: Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: CircleAvatar(
+        backgroundImage: AssetImage("assets/icon.png"),
+        radius: 20,
+      ),
+    ),
     children: [
       Text("Taskly is a simple task management app built with Flutter.")
-    ]
+    ],
   );
 }
 
