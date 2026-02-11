@@ -48,7 +48,7 @@ class CustomDrawer extends StatelessWidget {
                 leading: Icon(Icons.topic),
                 title: const Text("All tasks"),
                 selected: selectedIndex == 0,
-                onTap: () => Navigator.pushReplacementNamed(context, "/") // TODO: are we replacing the drawer here and actually pushing a bunch of views on top of each other?
+                onTap: () => Navigator.pushReplacementNamed(context, "/")
               ),
               DrawerListTile(
                 leading: Icon(Icons.check_circle),

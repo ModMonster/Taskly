@@ -20,12 +20,12 @@ class ImportantPage extends StatelessWidget {
       body: StreamBuilder(
         stream: box.watch(),
         builder: (context, snapshot) {
-          int waiting = 0;
+          int important = 0;
           box.toMap().forEach((key, value) {
-            if (!value.isCompleted) waiting++;
+            if (value.isImportant && !value.isCompleted) important++;
           });
 
-          if (waiting == 0) {
+          if (important == 0) {
             return EmptyPage(
               icon: Icons.check_circle_outline,
               text: "Nothing to see here!",

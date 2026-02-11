@@ -11,7 +11,6 @@ class GenericTaskListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(task.dueDate);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
