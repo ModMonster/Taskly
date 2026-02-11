@@ -1,16 +1,22 @@
-# taskly
+# Taskly
 
-A new Flutter project.
+Taskly is a simple task management app built with [Flutter](https://flutter.dev).
 
 ## Getting Started
+Follow these instructions to build and run the project
 
-This project is a starting point for a Flutter application.
+### Prerequisites
+- Flutter `3.38.9` (stable)
+- Dart `3.10.8`
 
-A few resources to get you started if this is your first Flutter project:
+> Set up Flutter by following the [installation guide](https://docs.flutter.dev/get-started/install)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Set up project
+- Clone the repository: `git clone https://github.com/ModMonster/Taskly.git`
+- Run `flutter pub get` to get all of the dependencies
+- Run the app with `flutter run`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+> Make sure you have an Android device connected or web debugging set up in order to run the app
+
+## License
+This project is licensed under the [MIT License](LICENSE.txt).
