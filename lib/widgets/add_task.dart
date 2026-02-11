@@ -94,7 +94,8 @@ class _AddTaskModalState extends State<AddTaskModal> {
                     // Add task to storage
                     Hive.box("tasks").add(new Task(
                       title: titleController.text,
-                      description: descriptionController.text
+                      description: descriptionController.text,
+                      isImportant: isImportant
                     ));
                     Navigator.pop(context);
                   }
