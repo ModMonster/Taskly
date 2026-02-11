@@ -12,47 +12,70 @@ class AddTaskModal extends StatefulWidget {
 
 class _AddTaskModalState extends State<AddTaskModal> {
   final TextEditingController titleController = TextEditingController();
-
   final TextEditingController descriptionController = TextEditingController();
+
+  bool isImportant = false;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
+        spacing: 12,
         children: [
-          Text(
-            "Create Task",
-            style: TextStyle(
-              fontSize: 20
-            )
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: titleController,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    label: Text("New task"),
+                    focusColor: Colors.deepPurple[300]
+                  ),
+                  onChanged: (newValue) {
+                    setState(() {});
+                  },
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    isImportant = !isImportant;
+                  });
+                },
+                icon: Icon(
+                  isImportant? Icons.label_important : Icons.label_important_outline
+                ),
+                tooltip: "Mark as important",
+              )
+            ],
           ),
-          SizedBox(height: 24),
-          TextField(
-            controller: titleController,
-            autofocus: true,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              label: Text("Title"),
-              focusColor: Colors.deepPurple[300]
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              spacing: 8,
+              children: [
+                ActionChip(
+                  label: Text("Description"),
+                  avatar: Icon(Icons.add),
+                  onPressed: () {
+            
+                  },
+                ),
+                ActionChip(
+                  label: Text("Due date"),
+                  avatar: Icon(Icons.add),
+                  onPressed: () {
+            
+                  },
+                )
+              ],
             ),
-            onChanged: (newValue) {
-              setState(() {});
-            },
           ),
-          SizedBox(height: 12),
-          TextField(
-            controller: descriptionController,
-            minLines: 3,
-            maxLines: 3,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              label: Text("Description"),
-              focusColor: Colors.deepPurple[300]
-            ),
-          ),
-          widget.shrink? SizedBox(height: 24) : Spacer(),
+          widget.shrink? Container() : Spacer(),
           Row(
             spacing: 12,
             children: [
