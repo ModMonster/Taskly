@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:taskly/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -102,6 +103,26 @@ class _SettingsPageState extends State<SettingsPage> {
             }
           ),
           Divider(),
+          ListTile(
+            title: Text("View on GitHub"),
+            leading: Icon(Icons.code),
+            onTap: () {
+              launchUrl(
+                Uri.parse("https://github.com/ModMonster/Taskly"),
+                mode: LaunchMode.externalApplication
+              );
+            }
+          ),
+          ListTile(
+            title: Text("Report a bug"),
+            leading: Icon(Icons.bug_report_outlined),
+            onTap: () {
+              launchUrl(
+                Uri.parse("https://github.com/ModMonster/Taskly/issues/new"),
+                mode: LaunchMode.externalApplication
+              );
+            }
+          ),
           ListTile(
             title: Text("About Taskly"),
             leading: Icon(Icons.info_outline),
