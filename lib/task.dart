@@ -1,7 +1,9 @@
+import 'package:intl/intl.dart';
+
 class Task {
-  final String title;
-  final String description;
-  final DateTime? dueDate;
+  String title;
+  String description;
+  DateTime? dueDate;
   bool isCompleted = false;
   bool isImportant;
   DateTime? completionTime;
@@ -14,7 +16,16 @@ class Task {
   });
 
   bool isOverdue() {
+    if (isCompleted) return false;
     if (dueDate == null) return false;
     return dueDate!.isBefore(DateTime.now().subtract(Duration(days: 1)));
+  }
+
+  static String formatDueDate(DateTime? dueDate) {
+    if (dueDate == null) return "";
+    if (dueDate.year == DateTime.now().year) {
+      return DateFormat("MMM d").format(dueDate);
+    }
+    return DateFormat("MMM d, yyyy").format(dueDate);
   }
 }

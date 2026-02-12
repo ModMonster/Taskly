@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:intl/intl.dart';
 import 'package:taskly/task.dart';
 
 class AddTaskModal extends StatefulWidget {
@@ -91,7 +90,7 @@ class _AddTaskModalState extends State<AddTaskModal> {
                 ),
                 ActionChip(
                   label: Text(
-                    dueDate != null? formatDueDate(dueDate!) : "Due date"
+                    dueDate != null? Task.formatDueDate(dueDate!) : "Due date"
                   ),
                   avatar: Icon(
                     dueDate != null? Icons.calendar_month : Icons.add
@@ -100,7 +99,7 @@ class _AddTaskModalState extends State<AddTaskModal> {
                     DateTime? date = await showDatePicker(
                       context: context,
                       initialDate: dueDate == null? DateTime.now().add(Duration(days: 1)) : dueDate,
-                      firstDate: DateTime.now(),
+                      firstDate: DateTime(1900),
                       lastDate: DateTime.now().add(Duration(days: 365*1000))
                     );
                     if (date == null) return;
@@ -146,12 +145,4 @@ class _AddTaskModalState extends State<AddTaskModal> {
       ),
     );
   }
-}
-
-String formatDueDate(DateTime? dueDate) {
-  if (dueDate == null) return "";
-  if (dueDate.year == DateTime.now().year) {
-    return DateFormat("MMM d").format(dueDate);
-  }
-  return DateFormat("MMM d, yyyy").format(dueDate);
 }

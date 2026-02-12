@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:taskly/pages/task_page.dart';
 import 'package:taskly/task.dart';
-import 'package:taskly/widgets/add_task.dart';
 
 class GenericTaskListTile extends StatelessWidget {
   final int index;
@@ -16,7 +16,7 @@ class GenericTaskListTile extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
-          title: Text(task.title),
+          title: Text(task.title, maxLines: 1, overflow: TextOverflow.ellipsis),
           subtitle: task.description.isEmpty && task.dueDate == null? null : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,7 +33,7 @@ class GenericTaskListTile extends StatelessWidget {
                 child: Container(
                   child: Chip(
                     avatar: Icon(task.isOverdue()? Icons.warning : Icons.calendar_month),
-                    label: Text(formatDueDate(task.dueDate)),
+                    label: Text(Task.formatDueDate(task.dueDate)),
                     visualDensity: VisualDensity.compact,
                     backgroundColor: task.isOverdue()? Theme.of(context).colorScheme.errorContainer : null,
                   ),
@@ -69,7 +69,13 @@ class GenericTaskListTile extends StatelessWidget {
             },
             tooltip: "Mark as completed",
           ),
-          trailing: trailing
+          trailing: trailing,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TaskPage(index, task)),
+            );
+          },
         ),
       ],
     );
